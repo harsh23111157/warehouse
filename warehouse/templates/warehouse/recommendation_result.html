@@ -6,7 +6,7 @@
 <div class="page-header">
   <div>
     <h1 class="page-title">Packing Recommendation</h1>
-    <p class="page-subtitle">Order #{{ order.id }} &bull; Created {{ order.created_at|date:"Y-m-d H:i" }}</p>
+    <p class="page-subtitle">Order #{{ order.id }} &bull; Created {{ order.created_at|date:"Y-m-d H:i:s" }}</p>
   </div>
   <div>
     <a href="{% url 'warehouse:order_create' %}" class="btn btn-secondary btn-sm">+ New Order</a>
