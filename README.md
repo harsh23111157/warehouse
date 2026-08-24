@@ -113,6 +113,7 @@ assignment/
 ├── requirements.txt
 ├── README.md
 ├── AI_USAGE.md
+├── chat_transcript.md
 └── TEST_OUTPUT.md
 ```
 
