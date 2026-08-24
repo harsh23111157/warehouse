@@ -273,6 +273,17 @@ Detailed test logs and environment specifications are recorded in [TEST_OUTPUT.m
 
 ---
 
+## ⚡ Production Performance Optimizations
+
+The application is tuned for fast cloud hosting on Render and production containers:
+- **Gunicorn Concurrency**: Multi-threaded WSGI workers (`--workers 2 --threads 4 --timeout 60`) preventing worker blocking.
+- **Database Connection Pooling**: Persistent SQLite connections (`CONN_MAX_AGE = 600`) with `PRAGMA journal_mode=WAL` for non-blocking concurrent reads.
+- **Static Asset Caching**: WhiteNoise configured with 1-year cache headers (`CompressedManifestStaticFilesStorage`).
+- **Asynchronous AI Hydration**: Primary recommendation renders in `<0.02s` without waiting for external LLM API latency.
+- **Automated Migration Hook**: Superuser `admin` / `admin123` is automatically generated via data migration (`0002_create_superuser`).
+
+---
+
 ## 📄 License & Integrity
 
 This project is built under standard software engineering best practices prioritizing correctness over cleverness. For details on AI usage and transparency, see [AI_USAGE.md](AI_USAGE.md).
