@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Box Selection System{% endblock %} - Warehouse Ops</title>
+  <link rel="stylesheet" href="{% static 'warehouse/style.css' %}">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-container">
+      <a href="{% url 'warehouse:order_create' %}" class="brand-title">
+        <span>Warehouse Fulfillment</span>
+        <span class="brand-badge">Box Selection</span>
+      </a>
+      <nav class="main-nav" aria-label="Main Navigation">
+        <a href="{% url 'warehouse:order_create' %}" class="nav-link">New Order</a>
+        <a href="{% url 'warehouse:product_list' %}" class="nav-link">Products</a>
+        <a href="{% url 'warehouse:box_list' %}" class="nav-link">Shipping Boxes</a>
+        <a href="/admin/" class="nav-link" target="_blank" rel="noopener">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="app-footer">
+    <p>AI-Assisted Box Selection System &bull; Deterministic Packing &amp; Fulfillment Engine</p>
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

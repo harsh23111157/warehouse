@@ -1,0 +1,60 @@
+{% extends 'warehouse/base.html' %}
+
+{% block title %}Product Catalog - Warehouse Ops{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Warehouse Product Catalog</h1>
+    <p class="page-subtitle">Registered products, dimensions, and weights available for order packing.</p>
+  </div>
+  <div>
+    <a href="/admin/warehouse/product/add/" target="_blank" class="btn btn-secondary btn-sm">+ Add Product in Admin</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Product Name</th>
+          <th>Length</th>
+          <th>Width</th>
+          <th>Height</th>
+          <th>Volume</th>
+          <th>Weight</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+          <tr>
+            <td class="font-mono"><strong>{{ product.sku }}</strong></td>
+            <td>{{ product.name }}</td>
+            <td class="font-mono">{{ product.length }} cm</td>
+            <td class="font-mono">{{ product.width }} cm</td>
+            <td class="font-mono">{{ product.height }} cm</td>
+            <td class="font-mono">{{ product.volume|floatformat:2 }} cm³</td>
+            <td class="font-mono">{{ product.weight }} kg</td>
+            <td>
+              {% if product.is_active %}
+                <span class="badge badge-success">Active</span>
+              {% else %}
+                <span class="badge badge-neutral">Inactive</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="8" style="text-align: center; color: var(--color-text-muted); padding: 2rem;">
+              No products found in catalog. Add products in <a href="/admin/warehouse/product/add/">Django Admin</a>.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

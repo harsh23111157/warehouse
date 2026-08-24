@@ -1,0 +1,60 @@
+{% extends 'warehouse/base.html' %}
+
+{% block title %}Shipping Boxes - Warehouse Ops{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Shipping Box Inventory</h1>
+    <p class="page-subtitle">Standard packaging box types, internal dimensions, and max payload limits.</p>
+  </div>
+  <div>
+    <a href="/admin/warehouse/shippingbox/add/" target="_blank" class="btn btn-secondary btn-sm">+ Add Box in Admin</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Box Name</th>
+          <th>Internal Length</th>
+          <th>Internal Width</th>
+          <th>Internal Height</th>
+          <th>Usable Volume</th>
+          <th>Max Weight</th>
+          <th>Unit Cost</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for box in boxes %}
+          <tr>
+            <td><strong>{{ box.name }}</strong></td>
+            <td class="font-mono">{{ box.length }} cm</td>
+            <td class="font-mono">{{ box.width }} cm</td>
+            <td class="font-mono">{{ box.height }} cm</td>
+            <td class="font-mono">{{ box.volume|floatformat:2 }} cm³</td>
+            <td class="font-mono">{{ box.max_weight }} kg</td>
+            <td class="font-mono">${{ box.cost|floatformat:2 }}</td>
+            <td>
+              {% if box.is_active %}
+                <span class="badge badge-success">Active</span>
+              {% else %}
+                <span class="badge badge-neutral">Inactive</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="8" style="text-align: center; color: var(--color-text-muted); padding: 2rem;">
+              No shipping boxes found in inventory. Add boxes in <a href="/admin/warehouse/shippingbox/add/">Django Admin</a>.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

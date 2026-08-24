@@ -1,0 +1,323 @@
+{% extends 'warehouse/base.html' %}
+
+{% block title %}Recommendation - Order #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Packing Recommendation</h1>
+    <p class="page-subtitle">Order #{{ order.id }} &bull; Created {{ order.created_at|date:"Y-m-d H:i" }}</p>
+  </div>
+  <div>
+    <a href="{% url 'warehouse:order_create' %}" class="btn btn-secondary btn-sm">+ New Order</a>
+  </div>
+</div>
+
+{% if result and result.is_fit_found %}
+  <div class="recommendation-banner" role="region" aria-label="Authoritative Deterministic Recommendation">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem;">
+      <div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <span class="badge badge-success">Recommended Box</span>
+          <span class="badge badge-neutral" style="font-size: 0.7rem;">Authoritative Deterministic Engine</span>
+        </div>
+        <h2 style="font-size: 1.5rem; margin-top: 0.35rem; font-weight: 700; color: #065f46;">
+          {{ result.recommended_box.name }}
+        </h2>
+      </div>
+      <div class="font-mono" style="font-size: 1.25rem; font-weight: 700; color: #065f46;">
+        ${{ result.recommended_box.cost|floatformat:2 }}
+      </div>
+    </div>
+
+    <p class="recommendation-explanation">
+      <strong>Deterministic Rationale:</strong> {{ result.explanation }}
+    </p>
+
+    <div class="specs-grid">
+      <div class="spec-box">
+        <div class="spec-box-label">Internal Dimensions</div>
+        <div class="spec-box-val">{{ result.recommended_box.length }} &times; {{ result.recommended_box.width }} &times; {{ result.recommended_box.height }} cm</div>
+      </div>
+      <div class="spec-box">
+        <div class="spec-box-label">Usable Volume</div>
+        <div class="spec-box-val">{{ result.recommended_box.volume|floatformat:2 }} cm³</div>
+      </div>
+      <div class="spec-box">
+        <div class="spec-box-label">Box Max Weight</div>
+        <div class="spec-box-val">{{ result.recommended_box.max_weight }} kg</div>
+      </div>
+      <div class="spec-box">
+        <div class="spec-box-label">Order Total Weight</div>
+        <div class="spec-box-val">{{ total_weight }} kg</div>
+      </div>
+    </div>
+  </div>
+{% elif result and not result.is_fit_found %}
+  <div class="recommendation-banner no-fit" role="alert">
+    <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.25rem;">
+      <span class="badge badge-danger">No Suitable Box</span>
+      <span class="badge badge-neutral" style="font-size: 0.7rem;">Authoritative Deterministic Engine</span>
+    </div>
+    <h2 style="font-size: 1.35rem; margin-top: 0.25rem; font-weight: 700; color: #9f1239;">
+      No Available Box Can Ship This Order
+    </h2>
+    <p class="recommendation-explanation" style="color: #4c0519;">
+      <strong>Deterministic Reason:</strong> {{ result.explanation }}
+    </p>
+  </div>
+{% else %}
+  <div class="alert alert-info">
+    <p>No line items found in this order.</p>
+  </div>
+{% endif %}
+
+<!-- AI Assistant Explanation Stepper & Card (Async Non-Blocking) -->
+<div id="ai-assistant-container" style="margin-bottom: 1.5rem;">
+  <div class="ai-stepper-card" id="ai-stepper-loading">
+    <div class="stepper-header">
+      <div class="stepper-title">
+        <span style="font-size: 1.1rem;">&#10024;</span>
+        <span>AI Logistics Assistant &bull; Live Synthesis</span>
+      </div>
+      <span class="badge badge-neutral" style="font-size: 0.65rem;">Asynchronous &bull; Non-Blocking</span>
+    </div>
+
+    <div class="stepper-list">
+      <!-- Step 1 -->
+      <div class="step-item step-done" id="step-1">
+        <div class="step-icon-wrap">&check;</div>
+        <div class="step-content">
+          <div class="step-name">
+            <span>Analyzing request</span>
+          </div>
+          <div class="step-desc">Deterministic packing &amp; dimensions calculated instantly</div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-item step-active" id="step-2">
+        <div class="step-icon-wrap" style="font-size: 0.9rem;">
+          <span class="spinner-sm"></span>
+        </div>
+        <div class="step-content">
+          <div class="step-name">
+            <span>Generating content</span>
+            <span class="spinner-sm"></span>
+          </div>
+          <div class="step-desc">AI is synthesizing warehouse packaging &amp; handling tips</div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-item step-pending" id="step-3">
+        <div class="step-icon-wrap">&bull;</div>
+        <div class="step-content">
+          <div class="step-name">
+            <span>Reviewing quality</span>
+          </div>
+          <div class="step-desc">Verifying physical consistency with deterministic constraints</div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-item step-pending" id="step-4">
+        <div class="step-icon-wrap">&bull;</div>
+        <div class="step-content">
+          <div class="step-name">
+            <span>Finalizing document</span>
+          </div>
+          <div class="step-desc">Preparing handling card for warehouse packing station</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container for rendered response -->
+  <div id="ai-content-card" style="display: none;"></div>
+</div>
+
+<div class="card">
+  <h2 class="card-title">Order Contents ({{ total_items }} Units &bull; {{ total_weight }} kg Total)</h2>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Product</th>
+          <th>Unit Dimensions (L&times;W&times;H)</th>
+          <th>Unit Volume</th>
+          <th>Unit Weight</th>
+          <th class="text-right">Quantity</th>
+          <th class="text-right">Subtotal Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order_items %}
+          <tr>
+            <td class="font-mono">{{ item.product.sku }}</td>
+            <td><strong>{{ item.product.name }}</strong></td>
+            <td class="font-mono">{{ item.product.length }} &times; {{ item.product.width }} &times; {{ item.product.height }} cm</td>
+            <td class="font-mono">{{ item.product.volume|floatformat:2 }} cm³</td>
+            <td class="font-mono">{{ item.product.weight }} kg</td>
+            <td class="text-right font-mono">{{ item.quantity }}</td>
+            <td class="text-right font-mono"><strong>{{ item.product.weight|floatformat:3 }} &times; {{ item.quantity }} kg</strong></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% if result and result.evaluations %}
+  <div class="card">
+    <h2 class="card-title">Candidate Boxes Evaluation &amp; Diagnostics</h2>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Box Name</th>
+            <th>Internal Dimensions</th>
+            <th>Volume</th>
+            <th>Max Weight</th>
+            <th>Cost</th>
+            <th>Evaluation &amp; Rejection Diagnostics</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ev in result.evaluations %}
+            <tr {% if result.recommended_box and ev.box.id == result.recommended_box.id %}class="highlight-winner"{% endif %}>
+              <td>
+                {% if result.recommended_box and ev.box.id == result.recommended_box.id %}
+                  <span class="badge badge-success">Recommended</span>
+                {% elif ev.is_valid %}
+                  <span class="badge badge-neutral">Valid Candidate</span>
+                {% else %}
+                  <span class="badge badge-danger">Disqualified</span>
+                {% endif %}
+              </td>
+              <td><strong>{{ ev.box.name }}</strong></td>
+              <td class="font-mono">{{ ev.box.length }} &times; {{ ev.box.width }} &times; {{ ev.box.height }} cm</td>
+              <td class="font-mono">{{ ev.volume|floatformat:2 }} cm³</td>
+              <td class="font-mono">{{ ev.box.max_weight }} kg</td>
+              <td class="font-mono">${{ ev.cost|floatformat:2 }}</td>
+              <td>
+                {% if ev.is_valid %}
+                  <span style="color: #047857; font-weight: 500;">
+                    &check; Accommodates items in orientation: {{ ev.tested_orientation.0 }}&times;{{ ev.tested_orientation.1 }}&times;{{ ev.tested_orientation.2 }} cm
+                  </span>
+                {% else %}
+                  <ul style="margin-left: 1rem; color: #be123c; font-size: 0.85rem;">
+                    {% for reason in ev.rejection_reasons %}
+                      <li>{{ reason }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Asynchronous Stepper Controller for Non-Blocking AI Assistant
+  document.addEventListener('DOMContentLoaded', function() {
+    const stepperLoading = document.getElementById('ai-stepper-loading');
+    const contentCard = document.getElementById('ai-content-card');
+    const step2 = document.getElementById('step-2');
+    const step3 = document.getElementById('step-3');
+    const step4 = document.getElementById('step-4');
+
+    if (!stepperLoading || !contentCard) return;
+
+    // Helper to mark a step as done
+    function markStepDone(stepEl, iconText) {
+      if (!stepEl) return;
+      stepEl.className = 'step-item step-done';
+      const icon = stepEl.querySelector('.step-icon-wrap');
+      if (icon) icon.innerHTML = iconText || '&check;';
+      const spinner = stepEl.querySelector('.spinner-sm');
+      if (spinner) spinner.remove();
+    }
+
+    // Helper to mark a step as active
+    function markStepActive(stepEl) {
+      if (!stepEl) return;
+      stepEl.className = 'step-item step-active';
+      const icon = stepEl.querySelector('.step-icon-wrap');
+      if (icon) icon.innerHTML = '<span class="spinner-sm"></span>';
+    }
+
+    // Fetch AI explanation asynchronously from the background JSON endpoint
+    fetch("{% url 'warehouse:order_ai_explanation' order.id %}")
+      .then(response => response.json())
+      .then(data => {
+        // Progress step animations
+        markStepDone(step2);
+        markStepActive(step3);
+
+        setTimeout(() => {
+          markStepDone(step3);
+          markStepActive(step4);
+
+          setTimeout(() => {
+            markStepDone(step4);
+
+            setTimeout(() => {
+              stepperLoading.style.display = 'none';
+
+              if (data && data.available && data.explanation) {
+                const tokenBadge = data.tokens_used ? `<span class="badge badge-neutral" style="font-size: 0.7rem;">${data.tokens_used} Tokens</span>` : '';
+                contentCard.innerHTML = `
+                  <div class="card" style="border-left: 5px solid #6366f1; background-color: #f8faff;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                      <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span class="badge" style="background-color: #e0e7ff; color: #3730a3; border-color: #c7d2fe;">AI Logistics Assistant</span>
+                        <span style="font-size: 0.8rem; color: #4338ca; font-weight: 600;">Model: ${data.model || 'agnes-2.5-flash'}</span>
+                        ${tokenBadge}
+                      </div>
+                      <span class="badge badge-neutral" style="font-size: 0.65rem;">Advisory &bull; Non-Authoritative</span>
+                    </div>
+                    <p style="font-size: 0.95rem; color: #1e1b4b; line-height: 1.6;">
+                      ${data.explanation}
+                    </p>
+                    <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem; border-top: 1px dashed #cbd5e1; padding-top: 0.35rem;">
+                      &bull; <em>This AI summary was generated live from structured deterministic facts. The mathematical decision above is binding.</em>
+                    </div>
+                  </div>
+                `;
+              } else {
+                contentCard.innerHTML = `
+                  <div class="card" style="border-left: 4px solid #94a3b8; background-color: #f8fafc; padding: 0.85rem 1.25rem;">
+                    <span style="font-size: 0.8rem; color: #64748b;">
+                      AI Assistant advisory summary currently offline or not configured. Deterministic recommendation above is authoritative and complete.
+                    </span>
+                  </div>
+                `;
+              }
+              contentCard.style.display = 'block';
+            }, 300);
+          }, 350);
+        }, 350);
+      })
+      .catch(err => {
+        stepperLoading.style.display = 'none';
+        contentCard.innerHTML = `
+          <div class="card" style="border-left: 4px solid #94a3b8; background-color: #f8fafc; padding: 0.85rem 1.25rem;">
+            <span style="font-size: 0.8rem; color: #64748b;">
+              AI Assistant connection timed out. Deterministic recommendation above is authoritative and complete.
+            </span>
+          </div>
+        `;
+        contentCard.style.display = 'block';
+      });
+  });
+</script>
+{% endblock %}
+
