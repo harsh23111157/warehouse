@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: warehouse-fulfillment
+    env: python
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate && python manage.py loaddata sample_warehouse_data.json && python manage.py collectstatic --no-input"
+    startCommand: "gunicorn config.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.11
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: "*"
+      - key: DJANGO_TIME_ZONE
+        value: "Asia/Kolkata"
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: AI_ENABLED
+        value: "True"
+      - key: AI_API_BASE_URL
+        value: "https://router.bynara.id/v1"
+      - key: AI_API_KEY
+        value: "sk-nry-uYRo2Djx20qmn8DBfTMYd9znvqmxf4GcOYNyrH8T2OQ"
+      - key: AI_MODEL
+        value: "agnes-2.5-flash"

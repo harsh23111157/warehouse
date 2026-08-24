@@ -1,5 +1,7 @@
 # AI-Assisted Box Selection System Dependencies
 Django==6.1
+gunicorn>=21.2.0
+whitenoise>=6.6.0
 pytest==9.1.1
 pytest-django==4.14.0
 asgiref==3.12.1
@@ -10,3 +12,4 @@ packaging==26.3
 pluggy==1.6.0
 colorama==0.4.6
 pygments==2.21.0
+
