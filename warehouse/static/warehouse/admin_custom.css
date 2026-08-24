@@ -292,3 +292,72 @@ ul.object-tools a {
 ul.object-tools a:hover {
   background: var(--default-button-hover-bg) !important;
 }
+
+/* 8. Dedicated Login Screen Polish */
+body.login {
+  background: #090d16 !important;
+}
+
+body.login #container {
+  background: transparent !important;
+  border: none !important;
+}
+
+body.login #content {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+  padding: 2rem !important;
+  max-width: 420px !important;
+  margin: 3rem auto !important;
+}
+
+body.login .form-row label {
+  color: #cbd5e1 !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  margin-bottom: 0.35rem !important;
+}
+
+body.login .form-row input {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+body.login .submit-row {
+  padding: 1rem 0 0 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  text-align: center !important;
+}
+
+body.login .submit-row input {
+  width: 100% !important;
+  background: #2563eb !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  padding: 0.75rem !important;
+  border-radius: 6px !important;
+  font-size: 0.95rem !important;
+  cursor: pointer !important;
+}
+
+body.login .submit-row input:hover {
+  background: #1d4ed8 !important;
+}
+
+body.login .errornote {
+  background: rgba(220, 38, 38, 0.15) !important;
+  border: 1px solid #dc2626 !important;
+  color: #fca5a5 !important;
+  border-radius: 6px !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  margin-bottom: 1.25rem !important;
+}
