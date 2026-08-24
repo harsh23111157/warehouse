@@ -1,30 +1,117 @@
-/* Custom Django Admin Theme matching Warehouse High-Contrast System */
+/* ==========================================================================
+   Warehouse Fulfillment Django Admin Theme — High-Craft Accessible Design
+   ========================================================================== */
+
+/* 1. Global CSS Variable Overrides for Django 6.1 (Light Theme Default) */
 :root {
-  --admin-header-bg: #0f172a;
-  --admin-subnav-bg: #1e293b;
-  --admin-primary: #1e40af;
-  --admin-primary-hover: #1d4ed8;
-  --admin-surface: #ffffff;
-  --admin-border: #cbd5e1;
-  --admin-text-main: #0f172a;
-  --admin-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --primary: #0f172a;
+  --secondary: #1e293b;
+  --accent: #2563eb;
+  --primary-fg: #f8fafc;
+  --body-fg: #0f172a;
+  --body-bg: #f8fafc;
+  --body-quiet-color: #64748b;
+  --body-loud-color: #020617;
+  --header-color: #f8fafc;
+  --header-bg: #0f172a;
+  --header-link-color: #93c5fd;
+  --breadcrumbs-fg: #cbd5e1;
+  --breadcrumbs-bg: #1e293b;
+  --breadcrumbs-link-fg: #93c5fd;
+  --link-fg: #1d4ed8;
+  --link-hover-color: #1e40af;
+  --link-selected-fg: #1e40af;
+  --hairline-color: #e2e8f0;
+  --border-color: #cbd5e1;
+  --darkened-bg: #f1f5f9;
+  --selected-bg: #eff6ff;
+  --selected-row: #f0f9ff;
+  --button-fg: #ffffff;
+  --button-bg: #0f172a;
+  --button-hover-bg: #1e293b;
+  --default-button-bg: #1e40af;
+  --default-button-hover-bg: #1d4ed8;
+  --close-button-bg: #64748b;
+  --close-button-hover-bg: #475569;
+  --delete-button-bg: #dc2626;
+  --delete-button-hover-bg: #b91c1c;
+  --font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-monospace: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
 }
 
-body {
-  font-family: var(--admin-font) !important;
-  color: var(--admin-text-main) !important;
-  background-color: #f8fafc !important;
+/* 2. Dark Mode Override for Native Contrast */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #0f172a;
+    --secondary: #1e293b;
+    --accent: #3b82f6;
+    --primary-fg: #f8fafc;
+    --body-fg: #f1f5f9;
+    --body-bg: #090d16;
+    --body-quiet-color: #94a3b8;
+    --body-loud-color: #ffffff;
+    --header-color: #f8fafc;
+    --header-bg: #0f172a;
+    --header-link-color: #93c5fd;
+    --breadcrumbs-fg: #cbd5e1;
+    --breadcrumbs-bg: #111827;
+    --breadcrumbs-link-fg: #60a5fa;
+    --link-fg: #60a5fa;
+    --link-hover-color: #93c5fd;
+    --hairline-color: #1e293b;
+    --border-color: #334155;
+    --darkened-bg: #111827;
+    --selected-bg: #1e3a8a;
+    --selected-row: #172554;
+    --button-fg: #ffffff;
+    --button-bg: #1e293b;
+    --button-hover-bg: #334155;
+    --default-button-bg: #2563eb;
+    --default-button-hover-bg: #3b82f6;
+  }
 }
 
+[data-theme="dark"] {
+  --primary: #0f172a;
+  --secondary: #1e293b;
+  --accent: #3b82f6;
+  --primary-fg: #f8fafc;
+  --body-fg: #f1f5f9;
+  --body-bg: #090d16;
+  --body-quiet-color: #94a3b8;
+  --body-loud-color: #ffffff;
+  --header-color: #f8fafc;
+  --header-bg: #0f172a;
+  --header-link-color: #93c5fd;
+  --breadcrumbs-fg: #cbd5e1;
+  --breadcrumbs-bg: #111827;
+  --breadcrumbs-link-fg: #60a5fa;
+  --link-fg: #60a5fa;
+  --link-hover-color: #93c5fd;
+  --hairline-color: #1e293b;
+  --border-color: #334155;
+  --darkened-bg: #111827;
+  --selected-bg: #1e3a8a;
+  --selected-row: #172554;
+  --button-fg: #ffffff;
+  --button-bg: #1e293b;
+  --button-hover-bg: #334155;
+  --default-button-bg: #2563eb;
+  --default-button-hover-bg: #3b82f6;
+}
+
+/* 3. Header & Navigation */
 #header {
-  background: var(--admin-header-bg) !important;
-  color: #f8fafc !important;
-  border-bottom: 2px solid #334155 !important;
-  padding: 0.85rem 1.5rem !important;
+  background: var(--header-bg) !important;
+  color: var(--header-color) !important;
+  border-bottom: 2px solid #1e293b !important;
+  padding: 0.85rem 1.75rem !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
-#header a:link, #header a:visited {
-  color: #f8fafc !important;
+#header a:link,
+#header a:visited {
+  color: var(--header-color) !important;
 }
 
 #branding h1 {
@@ -34,7 +121,8 @@ body {
   margin: 0 !important;
 }
 
-#branding h1 a:link, #branding h1 a:visited {
+#branding h1 a:link,
+#branding h1 a:visited {
   color: #f8fafc !important;
   text-decoration: none !important;
 }
@@ -44,27 +132,29 @@ body {
   color: #94a3b8 !important;
 }
 
-#user-tools a:link, #user-tools a:visited {
+#user-tools a {
   color: #cbd5e1 !important;
   text-decoration: none !important;
-  border-bottom: 1px dotted #64748b !important;
+  border-bottom: 1px dotted #475569 !important;
 }
 
 #user-tools a:hover {
   color: #ffffff !important;
+  border-bottom-color: #ffffff !important;
 }
 
 div.breadcrumbs {
-  background: var(--admin-subnav-bg) !important;
-  color: #cbd5e1 !important;
+  background: var(--breadcrumbs-bg) !important;
+  color: var(--breadcrumbs-fg) !important;
   font-size: 0.85rem !important;
-  padding: 0.5rem 1.5rem !important;
-  border-bottom: 1px solid #334155 !important;
+  padding: 0.55rem 1.75rem !important;
+  border-bottom: 1px solid var(--border-color) !important;
 }
 
 div.breadcrumbs a {
-  color: #93c5fd !important;
+  color: var(--breadcrumbs-link-fg) !important;
   text-decoration: none !important;
+  font-weight: 500 !important;
 }
 
 div.breadcrumbs a:hover {
@@ -72,78 +162,133 @@ div.breadcrumbs a:hover {
   text-decoration: underline !important;
 }
 
-/* Modules, Cards & Tables */
+/* 4. Modules, Tables & Surfaces */
 .module {
-  background: var(--admin-surface) !important;
-  border: 1px solid var(--admin-border) !important;
-  border-radius: 6px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  background: var(--body-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
   margin-bottom: 1.5rem !important;
 }
 
-.module caption, .module h2 {
-  background: #f1f5f9 !important;
-  color: var(--admin-text-main) !important;
-  font-weight: 600 !important;
+.module caption,
+.module h2 {
+  background: var(--darkened-bg) !important;
+  color: var(--body-loud-color) !important;
+  font-weight: 700 !important;
   font-size: 0.95rem !important;
-  border-bottom: 1px solid var(--admin-border) !important;
-  padding: 0.65rem 1rem !important;
+  letter-spacing: -0.01em !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 0.75rem 1.25rem !important;
 }
 
 #changelist table thead th {
-  background: #f1f5f9 !important;
-  color: #475569 !important;
+  background: var(--darkened-bg) !important;
+  color: var(--body-quiet-color) !important;
   font-size: 0.75rem !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  border-bottom: 1px solid var(--admin-border) !important;
-  padding: 0.65rem 0.85rem !important;
+  letter-spacing: 0.05em !important;
+  border-bottom: 2px solid var(--border-color) !important;
+  padding: 0.75rem 1rem !important;
 }
 
 #changelist table tbody tr:hover {
-  background-color: #f8fafc !important;
+  background-color: var(--selected-bg) !important;
 }
 
-/* Buttons & Actions */
-.button, input[type=submit], input[type=button], .submit-row input, a.button {
-  background: var(--admin-primary) !important;
-  color: #ffffff !important;
+/* 5. Buttons & Controls */
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+  background: var(--button-bg) !important;
+  color: var(--button-fg) !important;
   font-weight: 600 !important;
-  border-radius: 4px !important;
-  border: 1px solid transparent !important;
-  padding: 0.5rem 1.15rem !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 0.55rem 1.25rem !important;
   font-size: 0.875rem !important;
   cursor: pointer !important;
-  transition: background-color 0.15s !important;
+  transition: all 0.15s ease-in-out !important;
 }
 
-.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
-  background: var(--admin-primary-hover) !important;
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover,
+.submit-row input:hover,
+a.button:hover {
+  background: var(--button-hover-bg) !important;
+  border-color: var(--accent) !important;
 }
 
-.button.default, input[type=submit].default, .submit-row input.default {
-  background: #1e40af !important;
+.button.default,
+input[type=submit].default,
+.submit-row input.default {
+  background: var(--default-button-bg) !important;
+  border-color: transparent !important;
 }
 
-.deletelink, .deletelink-box a {
-  background: #dc2626 !important;
+.button.default:hover,
+input[type=submit].default:hover,
+.submit-row input.default:hover {
+  background: var(--default-button-hover-bg) !important;
+}
+
+.deletelink,
+.deletelink-box a {
+  background: var(--delete-button-bg) !important;
   color: #ffffff !important;
-  border-radius: 4px !important;
-  padding: 0.45rem 0.85rem !important;
+  border-radius: 6px !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
 }
 
-/* Form Controls */
-input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], input[type=tel], textarea, select, .vTextField {
-  border: 1px solid var(--admin-border) !important;
-  border-radius: 4px !important;
-  padding: 0.45rem 0.65rem !important;
+.deletelink:hover,
+.deletelink-box a:hover {
+  background: var(--delete-button-hover-bg) !important;
+}
+
+/* 6. Form Inputs */
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=number],
+input[type=tel],
+textarea,
+select,
+.vTextField {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px !important;
+  padding: 0.5rem 0.75rem !important;
   font-size: 0.9rem !important;
-  color: var(--admin-text-main) !important;
+  background-color: var(--body-bg) !important;
+  color: var(--body-fg) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
 }
 
-input[type=text]:focus, textarea:focus, select:focus {
-  border-color: #2563eb !important;
+input[type=text]:focus,
+input[type=password]:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent) !important;
   outline: none !important;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2) !important;
+}
+
+/* 7. Object Tools & Filters */
+ul.object-tools a {
+  border-radius: 6px !important;
+  background: var(--default-button-bg) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 1rem !important;
+}
+
+ul.object-tools a:hover {
+  background: var(--default-button-hover-bg) !important;
 }
