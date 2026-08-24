@@ -1,6 +1,6 @@
 # 📖 Warehouse Fulfillment Application User Guide & Walkthrough
 
-Welcome to the **AI-Assisted Box Selection & Warehouse Fulfillment System** user manual. This guide explains how to use every feature of the application, including creating customer orders, understanding packing recommendations, inspecting box rejection diagnostics, managing inventory catalogs, and administering products and packaging types in the Django Admin portal.
+Welcome to the **AI-Assisted Box Selection & Warehouse Fulfillment System** visual user manual. This guide explains how to use every feature of the application, illustrated with real screenshots captured from live operational sessions.
 
 ---
 
@@ -15,124 +15,96 @@ Welcome to the **AI-Assisted Box Selection & Warehouse Fulfillment System** user
 
 ---
 
-## 🚀 Step 1: Placing a Warehouse Customer Order
+## 🛒 1. Interactive Order Station (Placing an Order)
 
-1. Navigate to the **Order Station** (`/`).
-2. You will see the **Interactive Order Builder**:
-   - Select a product from the dropdown (e.g., `Hardcover Engineering Textbook (24.0×17.0×4.5 cm, 1.200 kg)`).
-   - Enter the desired quantity (e.g. `2`).
-3. To add more items to the order:
-   - Click the **"+ Add Product Item"** button.
-   - Select the next product (e.g., `Ceramic Coffee Mug (Individually Boxed)` with quantity `1`).
-4. *(Optional)* Add fulfillment notes in the **Order Notes** field (e.g., `Priority rush order - fragile items`).
-5. Click **"Calculate Box Recommendation"**.
+Navigate to `/` to open the **Order Creation Station**. Operators select products, configure quantities, and enter optional fulfillment notes:
 
----
+![Interactive Order Builder](docs/images/01_order_builder_home.png)
 
-## 📦 Step 2: Interpreting the Packing Recommendation Result
-
-Once submitted, the deterministic recommendation engine evaluates the order across all available shipping boxes in **< 0.02s** and presents the result:
-
-![Recommendation Winner & Candidate Evaluations](docs/images/02_recommendation_winner.png)
-
-### What the Winner Card Shows:
-- **Winning Box Name**: e.g., `Box 2 - Medium Standard`.
-- **Status Badge**: `RECOMMENDED` (Green).
-- **Usable Volume**: e.g. `12,000.00 cm³`.
-- **Unit Cost**: e.g. `$1.20`.
-- **Internal Dimensions**: `30.0 × 20.0 × 20.0 cm`.
-- **Payload Capacity**: `5.000 kg` (Order Weight: `2.850 kg` $\rightarrow$ **Safe**).
-- **Physical Justification**: Why this box won (Smallest suitable volume capable of safely fitting the items).
+### How to Create an Order:
+1. Select a product from the dropdown (e.g. `Hardcover Engineering Textbook` or `Ceramic Coffee Mug`).
+2. Enter the required quantity (e.g., `2`).
+3. Click **"+ Add Product Item"** to append additional SKUs to the order.
+4. *(Optional)* Provide packing instructions in the **Order Notes** field.
+5. Click **"Calculate Box Recommendation"** to trigger the deterministic packing algorithm.
 
 ---
 
-## 🔍 Step 3: Inspecting Candidate Box Rejections & Diagnostics
+## 📦 2. Packing Recommendation Result & Winner Card
 
-Beneath the winner card is the **Candidate Boxes Evaluation Table**, showing every box in the warehouse inventory and why it was accepted or rejected:
+The deterministic engine computes orthogonal rotations, 1D bounding stacks, and payload weight limits in **< 0.02s**:
 
-| Box Name | Internal Dimensions | Max Weight | Usable Volume | Cost | Result | Diagnostic Reason |
-|---|---|---|---|---|---|---|
-| **Box 1 - Small Mailer** | 20.0 × 15.0 × 10.0 cm | 2.000 kg | 3,000 cm³ | $0.50 | `DISQUALIFIED` | **`WEIGHT`**: Order (2.850 kg) exceeds box payload capacity (2.000 kg). |
-| **Box 2 - Medium Standard** | 30.0 × 20.0 × 20.0 cm | 5.000 kg | 12,000 cm³ | $1.20 | `RECOMMENDED` | **Winner**: Fits all items across valid orthogonal rotations with lowest volume. |
-| **Box 3 - Medium Deep** | 25.0 × 25.0 × 25.0 cm | 7.000 kg | 15,625 cm³ | $1.75 | `QUALIFIED` | Fits order, but has larger volume (15,625 cm³) than Box 2 (12,000 cm³). |
-| **Box 4 - Large Carton** | 40.0 × 30.0 × 30.0 cm | 10.000 kg | 36,000 cm³ | $2.50 | `QUALIFIED` | Fits order, but excessive void space. |
+![Packing Recommendation Result](docs/images/02_recommendation_winner.png)
+
+### Key Result Components:
+- **Winning Box Card**: Highlights the optimal box (`Box 2 - Medium Standard`), usable volume (`12,000.00 cm³`), unit cost (`$1.20`), and internal dimensions.
+- **Physical Justification**: Human-readable explanation of why this box was selected.
+- **Candidate Evaluation Table**: Itemizes all available boxes in inventory and details why smaller boxes were disqualified (e.g., `WEIGHT` or `DIMENSIONS` constraint violations).
 
 ---
 
-## 🤖 Step 4: Asynchronous AI Logistics Assistant
+## 🤖 3. Asynchronous AI Logistics Assistant
 
-While the authoritative box recommendation loads **instantly**, the advisory AI layer synthesizes operator handling precautions asynchronously in the background:
+While the authoritative box recommendation renders instantaneously, the advisory AI layer synthesizes operator packaging and handling tips in the background:
 
 ![Stepped AI Synthesis Loader](docs/images/03_stepped_ai_loader.png)
 
-1. **Warehouse Stepped Progress Indicator**:
-   - Step 1: **Analyzing request** (Deterministic packing calculated ✓)
-   - Step 2: **Generating content** (AI synthesizing warehouse packaging & handling tips ⏳)
-   - Step 3: **Reviewing quality** (Verifying physical consistency with deterministic constraints ✓)
-   - Step 4: **Finalizing document** (Rendering live advisory card)
-2. **Resolved Live Advisory Card**:
-   - Displays practical packing tips (e.g. recommended void fill, tape reinforcement, fragile orientation).
-   - Shows live metadata: Model used (`agnes-2.5-flash`) and token usage badge (e.g. `650 Tokens`).
+### 4-Stage Stepped Synthesis:
+1. **Analyzing request** (Deterministic packing calculated ✓)
+2. **Generating content** (AI synthesizing warehouse packaging & handling tips ⏳)
+3. **Reviewing quality** (Verifying physical consistency with deterministic constraints ✓)
+4. **Finalizing document** (Rendering live advisory card with token usage count and model stats)
 
 ---
 
-## 📋 Step 5: Managing the Product Catalog
+## 📋 4. Warehouse Product Catalog
 
-Navigate to **Products** in the top navigation bar (`/products/`):
+Navigate to `/products/` in the top navigation bar to view the registered SKU catalog:
 
-- View all active SKUs in the warehouse catalog.
+![Warehouse Product Catalog](docs/images/04_product_catalog.png)
+
 - Inspect exact Length, Width, Height ($cm$), Unit Weight ($kg$), and Calculated Volume ($cm³$).
-- Verify active/inactive product status.
+- View active/inactive inventory status for each SKU.
+- Quick link to add new products in Admin.
 
 ---
 
-## 📦 Step 6: Managing Shipping Boxes Inventory
+## 📦 5. Shipping Box Inventory
 
-Navigate to **Shipping Boxes** in the top navigation bar (`/boxes/`):
+Navigate to `/boxes/` in the top navigation bar to inspect packaging types available in the packing station:
 
-- View all corrugated box types available in the packing station.
-- Inspect Internal Length, Width, Height ($cm$), Max Payload Capacity ($kg$), Usable Volume ($cm³$), and Unit Cost ($).
+![Shipping Box Inventory](docs/images/05_box_inventory.png)
 
----
-
-## ⚙️ Step 7: Adding Products & Boxes in the Django Admin Portal
-
-1. Navigate to `/admin/` and log in with:
-   - **Username**: `admin`
-   - **Password**: `admin123`
-
-![Admin Login Screen](docs/images/04_admin_login.png)
-
-### Adding a New Product:
-1. Click **"+ Add"** next to **Products**.
-2. Enter:
-   - **SKU**: `SKU-HEADPHONE-005`
-   - **Name**: `Wireless Noise-Cancelling Headphones`
-   - **Dimensions**: Length: `20.00`, Width: `18.00`, Height: `8.00` ($cm$)
-   - **Weight**: `0.450` ($kg$)
-   - **Is Active**: Checked ✓
-3. Click **"Save"**. The product is immediately available in the Order Builder!
-
-### Adding a New Shipping Box:
-1. Click **"+ Add"** next to **Shipping Boxes**.
-2. Enter:
-   - **Name**: `Box 6 - Long Tube Mailer`
-   - **Internal Dimensions**: Length: `60.00`, Width: `15.00`, Height: `15.00` ($cm$)
-   - **Max Weight**: `6.000` ($kg$)
-   - **Cost**: `1.85` ($)
-   - **Is Active**: Checked ✓
-3. Click **"Save"**. The recommendation engine will automatically include the new box in future evaluations!
+- Inspect internal usable dimensions ($cm$).
+- Verify maximum payload weight limits ($kg$).
+- Review unit pricing and usable volume for cost comparison.
 
 ---
 
-## 🚫 Step 8: Handling Edge Cases ("No Suitable Box Found")
+## ⚙️ 6. Django Admin Portal & Management
 
-If an order contains an item that exceeds the dimensions or weight capacity of all available boxes in inventory:
-1. The engine gracefully returns a structured **No-Fit State**.
-2. A prominent high-contrast warning banner is displayed:
-   > **"No Available Box Can Ship This Order"**
-3. The diagnostics table itemizes the exact physical reason why every box in inventory was disqualified (e.g. `Exceeds max weight of 10.000 kg` or `Exceeds length limit across all 6 orthogonal rotations`).
-4. Suggests splitting the items into multiple consignments.
+### Admin Login Screen
+Navigate to `/admin/` and authenticate using `admin` / `admin123`:
+
+![Admin Login Screen](docs/images/08_admin_login.png)
+
+---
+
+### Admin Dashboard (`/admin/`)
+Access central configuration for Authentication, Orders, Products, and Shipping Boxes:
+
+![Admin Dashboard](docs/images/06_admin_dashboard.png)
+
+---
+
+### Managing Products & Packaging in Admin (`/admin/warehouse/product/`)
+Warehouse managers can add new SKUs, adjust physical dimensions, update weights, or configure custom box sizes:
+
+![Admin Products Table](docs/images/07_admin_products_table.png)
+
+- **Search & Filter**: Search by SKU or product name; filter by active status.
+- **Add Product**: Click **"Add Product"** in the top right to register a new SKU.
+- **Direct Return**: Click **"← Back to Order Station"** in the top right to return to the live order builder anytime.
 
 ---
 
