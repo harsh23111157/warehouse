@@ -2,8 +2,8 @@ services:
   - type: web
     name: warehouse-fulfillment
     env: python
-    buildCommand: "pip install -r requirements.txt && python manage.py migrate && python manage.py loaddata sample_warehouse_data.json && python manage.py ensure_superuser && python manage.py collectstatic --no-input"
-    startCommand: "gunicorn config.wsgi:application"
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input"
+    startCommand: "python manage.py migrate && python manage.py loaddata sample_warehouse_data.json && python manage.py ensure_superuser && gunicorn config.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.11
