@@ -187,8 +187,8 @@ The system integrates an optional LLM explanation layer via an OpenAI-compatible
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/ai-assisted-box-selection.git
-cd ai-assisted-box-selection
+git clone https://github.com/harsh23111157/warehouse.git
+cd warehouse
 
 # Create virtual environment
 python -m venv .venv
