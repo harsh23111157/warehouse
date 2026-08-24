@@ -14,7 +14,7 @@
   Recommends the most suitable, cost-effective shipping box using 6-axis orthogonal rotations, 1D bounding stacks, hard weight capacity gating, and transparent rejection diagnostics.
 </p>
 
-[Quickstart](#-quickstart--installation) • [Algorithm Details](#-deterministic-selection-algorithm) • [Architecture](#-system-architecture) • [AI Integration](#-ai-assisted-logistics-layer) • [Test Verification](#-automated-tests--verification)
+[Quickstart](#-quickstart--installation) • [User Manual & Screenshots](APPLICATION_GUIDE.md) • [Algorithm Details](#-deterministic-selection-algorithm) • [Architecture](#-system-architecture) • [AI Integration](#-ai-assisted-logistics-layer) • [Test Verification](#-automated-tests--verification)
 
 </div>
 
@@ -112,6 +112,7 @@ assignment/
 ├── pytest.ini
 ├── requirements.txt
 ├── README.md
+├── APPLICATION_GUIDE.md
 ├── AI_USAGE.md
 ├── chat_transcript.md
 └── TEST_OUTPUT.md
