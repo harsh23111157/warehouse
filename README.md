@@ -27,7 +27,7 @@ When an ecommerce customer places an order, warehouse staff need to know which s
 2. **Excessive Void Fill Material**: Increased packing labor and packaging waste.
 3. **Damaged Goods**: Exceeding box payload capacity or improper spatial orientation.
 
-This system provides an **instant, deterministic fulfillment tool** where warehouse operators input customer order items and receive the exact mathematically optimal shipping box in $<0.02\text{s}$, complete with transparent physical explanations and itemized rejection reasons for disqualified boxes.
+This system provides an **instant, deterministic fulfillment tool** where warehouse operators input customer order items and receive the exact mathematically optimal shipping box in **< 0.02s**, complete with transparent physical explanations and itemized rejection reasons for disqualified boxes.
 
 ---
 
@@ -36,9 +36,9 @@ This system provides an **instant, deterministic fulfillment tool** where wareho
 | Feature | Description |
 |---|---|
 | **100% Deterministic Engine** | Pure Python mathematical calculations. Zero random heuristics, zero third-party bin-packing black boxes. |
-| **6-Axis Orthogonal Rotation** | Evaluates all 3D spatial permutations $\mathcal{O}(L, W, H)$ with automatic symmetry deduplication for cubes & square faces. |
+| **6-Axis Orthogonal Rotation** | Evaluates all 3D spatial permutations `(L, W, H)` with automatic symmetry deduplication for cubes & square faces. |
 | **1D Orthogonal Stacking** | Supports multi-quantity & multi-SKU orders via composite bounding stack alignments. |
-| **Payload Capacity Gating** | Hard gate rejecting any candidate box where $\sum (\text{weight} \times \text{quantity}) > \text{box.max\_weight}$. |
+| **Payload Capacity Gating** | Hard gate rejecting any candidate box where `total_weight > box.max_weight`. |
 | **Deterministic Ranking** | 4-tier lexicographic sort: **Usable Volume $\uparrow$** $\to$ **Unit Cost $\uparrow$** $\to$ **Box Name $\uparrow$** $\to$ **Box ID $\uparrow$**. |
 | **Explainable Diagnostics** | Comprehensive breakdown explaining why the winner was chosen and itemizing why alternatives failed (`DIMENSIONS`, `WEIGHT`). |
 | **Non-Blocking AI Assistant** | Async advisory layer providing warehouse handling guidance with live token usage and model stats without blocking page load. |
@@ -172,7 +172,7 @@ The system integrates an optional LLM explanation layer via an OpenAI-compatible
 > [!TIP]
 > **What the AI DOES do:**
 > - Generates human-friendly packing & handling summaries for warehouse packing staff.
-> - Runs **asynchronously** via background JSON fetch so the main recommendation page loads instantaneously ($<0.02\text{s}$).
+> - Runs **asynchronously** via background JSON fetch so the main recommendation page loads instantaneously (**< 0.02s**).
 > - Features an interactive warehouse-themed stepped loader (`Analyzing request` $\to$ `Generating content` $\to$ `Reviewing quality` $\to$ `Finalizing document`).
 
 ---
